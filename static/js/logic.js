@@ -7,47 +7,69 @@ let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.ge
 d3.json(url).then(function (data) {
     // Once we get a response, send the data.features object to the createFeatures function.
     //console.log(data); 
-   createFeatures(data.features);
+  createFeatures(data.features);
+
+  // // Set Up Legend
+  // let legend = L.control({ position: "bottomright" });
+
+  // legend.onAdd = function() {
+  //   let div = L.DomUtil.create("div", "info legend"), 
+
+  //   magnitudedepth = [-10-10, 10-30, 30-50, 50-70, 70-90, 90];
+
+  //   div.innerHTML += "<h3>Magnitude</h3>"
+
+  //   for (var i = 0; i < magnitudeLevels.length; i++) {
+  //     div.innerHTML +=
+  //       '<i style="background: ' + chooseColor(magnitudeLevels[i] + 1) + '"></i> ' +
+  //       magnitudeLevels[i] + (magnitudeLevels[i + 1] ? '&ndash;' + magnitudeLevels[i + 1] + '<br>' : '+');
+  //   }
+  //   return div;
+  // };
+
+  // // Add Legend to the Map
+  // legend.addTo(myMap);
+  
 });
 
 function createFeatures(earthquakeData) {
 
     // Function to Determine Size of Marker Based on the Magnitude of the Earthquake
     function markerSize(magnitude) {
-        if (magnitude === 0) {
-            return 1;
-        }
-        return magnitude * 5;
+      if (magnitude === 0) {
+        return 1;
+      }
+      return magnitude * 5;
     }
     
     // To determine the color based on magnitude of earthquake
     function chooseColor(magnitude) {
-        switch (true) {
-         case magnitude > 90:
-            return "red";
+      switch (true) {
+        case magnitude > 90:
+          return "red";
         case magnitude > 70:
-            return "orange";
+          return "orange";
         case magnitude > 50:
-            return "gold";
+          return "gold";
         case magnitude > 30:
-            return "yellow";
+          return "yellow";
         case magnitude > 10:
-            return "green";
+          return "green";
         default:
-            return "lightgreen";
-        }
+          return "lightgreen";
+      }
     }
     
     function styleInfo(feature) {
-        return {
-            opacity: 1,
-            fillOpacity: 1,
-            fillColor: chooseColor(feature.geometry.coordinates[2]),
-            color: "black",
-            radius: markerSize(feature.properties.mag),
-            stroke: true,
-            weight: 0.5
-        };
+      return {
+        opacity: 1,
+        fillOpacity: 1,
+        fillColor: chooseColor(feature.geometry.coordinates[2]),
+        color: "black",
+        radius: markerSize(feature.properties.mag),
+        stroke: true,
+        weight: 0.5
+      };
     }
     
 
@@ -108,6 +130,7 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
-  
+
 }  
-  
+
+
